@@ -1,4 +1,4 @@
-package eu.chargetime.hq.core;
+package eu.chargetime.hq.gui.view;
 /*
     ChargeTime.eu - ChargeTime HQ
 
@@ -25,6 +25,35 @@ package eu.chargetime.hq.core;
     SOFTWARE.
  */
 
-public interface Connection {
-    boolean isConnected();
+import eu.chargetime.hq.gui.controller.MainController;
+import javax.swing.*;
+
+public class MainView {
+
+    private MainController controller;
+
+    public MainView(MainController controller) {
+
+        if (controller == null)
+            throw new IllegalArgumentException();
+
+        this.controller = controller;
+    }
+
+    public void show() {
+        JFrame frame = createFrame();
+        frame.setVisible(true);
+        frame.setSize(400, 200);
+    }
+
+    private JFrame createFrame() {
+        JFrame frame = new JFrame("ChargeTime HQ");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
+
+        //frame.pack();
+        return frame;
+    }
+
 }

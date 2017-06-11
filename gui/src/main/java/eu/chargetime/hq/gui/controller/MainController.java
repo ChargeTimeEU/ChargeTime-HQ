@@ -1,7 +1,7 @@
-package eu.chargetime.hq.core;
+package eu.chargetime.hq.gui.controller;
 /*
     ChargeTime.eu - ChargeTime HQ
-
+    
     MIT License
 
     Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
@@ -25,6 +25,23 @@ package eu.chargetime.hq.core;
     SOFTWARE.
  */
 
-public interface Connection {
-    boolean isConnected();
+import eu.chargetime.hq.core.Connection;
+import eu.chargetime.hq.gui.view.SetupPanel;
+
+public class MainController {
+
+    private final SetupPanel setupPanel;
+    private final Connection connection;
+
+    public MainController(Connection connection, SetupPanel setupPanel) {
+
+        if (connection == null)
+            throw new IllegalArgumentException();
+
+        if (setupPanel == null)
+            throw new IllegalArgumentException();
+
+        this.connection = connection;
+        this.setupPanel = setupPanel;
+    }
 }

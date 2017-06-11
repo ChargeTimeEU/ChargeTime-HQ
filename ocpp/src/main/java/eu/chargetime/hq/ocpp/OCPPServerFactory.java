@@ -1,7 +1,13 @@
-package eu.chargetime.hq.core;
+package eu.chargetime.hq.ocpp;
+
+import eu.chargetime.ocpp.JSONServer;
+import eu.chargetime.ocpp.SOAPServer;
+import eu.chargetime.ocpp.Server;
+import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
+
 /*
     ChargeTime.eu - ChargeTime HQ
-
+    
     MIT License
 
     Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
@@ -24,7 +30,27 @@ package eu.chargetime.hq.core;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
+public class OCPPServerFactory {
 
-public interface Connection {
-    boolean isConnected();
+    private ServerCoreProfile coreProfile;
+
+    public OCPPServerFactory(ServerCoreProfile coreProfile) {
+
+        if(coreProfile == null)
+            throw new IllegalArgumentException();
+        this.coreProfile = coreProfile;
+    }
+
+    public Server create(OCPPType type) {
+        Server rel = null;
+        switch (type) {
+            case json:
+                rel = new JSONServer(coreProfile);
+                break;
+            case SOAP:
+                rel = new SOAPServer(coreProfile);
+                break;
+        }
+        return rel;
+    }
 }

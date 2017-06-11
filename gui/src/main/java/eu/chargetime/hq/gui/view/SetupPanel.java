@@ -1,10 +1,7 @@
-package eu.chargetime.hq.core.test;
-
-import eu.chargetime.hq.core.Connection;
-
+package eu.chargetime.hq.gui.view;
 /*
-    ChargeTime.eu - ChargeTimeHQ
-    
+    ChargeTime.eu - ChargeTime HQ
+
     MIT License
 
     Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
@@ -27,11 +24,9 @@ import eu.chargetime.hq.core.Connection;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
-public class ConnectionTest {
 
-    private Connection sut;
+import javax.swing.*;
 
-    public ConnectionTest() {
-        sut = new Connection();
-    }
+public interface SetupPanel {
+    JPanel drawPanel();
 }

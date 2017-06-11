@@ -1,7 +1,15 @@
-package eu.chargetime.hq.core;
+package eu.chargetime.hq.gui.controller.test;
+
+import eu.chargetime.hq.core.Connection;
+import eu.chargetime.hq.gui.controller.MainController;
+import org.junit.Test;
+import org.mockito.Mock;
+
+import static org.mockito.Mockito.*;
+
 /*
     ChargeTime.eu - ChargeTime HQ
-
+    
     MIT License
 
     Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
@@ -24,7 +32,26 @@ package eu.chargetime.hq.core;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
+public class MainControllerTest {
 
-public interface Connection {
-    boolean isConnected();
+    private MainController sut;
+
+    @Mock
+    Connection connection = mock(Connection.class);
+
+    public MainControllerTest() {
+        sut = new MainController(connection);
+    }
+
+    @Test
+    public void connect_listenIsCalled() throws Exception {
+        // When
+        sut.connect();
+
+        //Then
+        verify(connection, times(1)).isConnected();
+    }
+
+
+
 }

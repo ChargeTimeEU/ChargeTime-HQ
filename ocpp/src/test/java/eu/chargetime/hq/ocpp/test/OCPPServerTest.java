@@ -1,7 +1,15 @@
-package eu.chargetime.hq.core;
+package eu.chargetime.hq.ocpp.test;
+
+import eu.chargetime.hq.ocpp.OCPPServer;
+import eu.chargetime.hq.ocpp.OCPPServerFactory;
+import org.junit.Test;
+import org.mockito.Mock;
+
+import static org.mockito.Mockito.*;
+
 /*
     ChargeTime.eu - ChargeTime HQ
-
+    
     MIT License
 
     Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
@@ -24,7 +32,23 @@ package eu.chargetime.hq.core;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
+public class OCPPServerTest {
 
-public interface Connection {
-    boolean isConnected();
+    private OCPPServer sut;
+
+    @Mock
+    OCPPServerFactory agentFactory = mock(OCPPServerFactory.class);
+
+    public OCPPServerTest() {
+        sut = new OCPPServer(agentFactory);
+    }
+
+    @Test
+    public void listen_agentIsCreated() throws Exception {
+        // When
+        sut.isConnected();
+
+        //Then
+        verify(agentFactory, times(1)).create(any());
+    }
 }

@@ -1,7 +1,10 @@
-package eu.chargetime.hq.core;
+package eu.chargetime.hq.ocpp;
+
+import eu.chargetime.hq.core.Connection;
+
 /*
     ChargeTime.eu - ChargeTime HQ
-
+    
     MIT License
 
     Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
@@ -24,7 +27,19 @@ package eu.chargetime.hq.core;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
+public class OCPPServer implements Connection {
 
-public interface Connection {
-    boolean isConnected();
+    private OCPPServerFactory serverFactory;
+
+    public OCPPServer(OCPPServerFactory serverFactory) {
+
+        if (serverFactory == null)
+            throw new IllegalArgumentException();
+        this.serverFactory = serverFactory;
+    }
+
+    @Override
+    public boolean isConnected() {
+        return false;
+    }
 }

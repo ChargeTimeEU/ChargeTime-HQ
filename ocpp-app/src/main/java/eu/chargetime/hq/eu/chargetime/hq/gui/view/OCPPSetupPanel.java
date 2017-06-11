@@ -1,4 +1,4 @@
-package eu.chargetime.hq.core;
+package eu.chargetime.hq.eu.chargetime.hq.gui.view;
 /*
     ChargeTime.eu - ChargeTime HQ
 
@@ -25,6 +25,15 @@ package eu.chargetime.hq.core;
     SOFTWARE.
  */
 
-public interface Connection {
-    boolean isConnected();
+import eu.chargetime.hq.gui.view.SetupPanel;
+import javax.swing.*;
+
+public class OCPPSetupPanel implements SetupPanel {
+
+    @Override
+    public JPanel drawPanel() {
+        JPanel panel = new JPanel();
+
+        return panel;
+    }
 }

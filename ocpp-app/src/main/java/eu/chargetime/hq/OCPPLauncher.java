@@ -1,4 +1,4 @@
-package eu.chargetime.hq.core;
+package eu.chargetime.hq;
 /*
     ChargeTime.eu - ChargeTime HQ
 
@@ -25,6 +25,28 @@ package eu.chargetime.hq.core;
     SOFTWARE.
  */
 
-public interface Connection {
-    boolean isConnected();
+import eu.chargetime.hq.eu.chargetime.hq.gui.view.OCPPSetupPanel;
+import eu.chargetime.hq.gui.controller.MainController;
+import eu.chargetime.hq.gui.view.MainView;
+import eu.chargetime.hq.ocpp.OCPPServer;
+
+public class OCPPLauncher {
+    private MainView mainWindow;
+
+    public static void main(String args[]) {
+        new OCPPLauncher().launch();
+    }
+
+    public OCPPLauncher() {
+        // Composite root
+        OCPPServer server = new OCPPServer(null);
+        OCPPSetupPanel setupPanel = new OCPPSetupPanel();
+        MainController mainController = new MainController(server, setupPanel);
+        mainWindow = new MainView(mainController);
+    }
+
+    public void launch() {
+        // Run program
+        mainWindow.show();
+    }
 }
