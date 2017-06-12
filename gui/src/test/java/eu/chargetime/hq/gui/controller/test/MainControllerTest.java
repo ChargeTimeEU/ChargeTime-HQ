@@ -2,6 +2,7 @@ package eu.chargetime.hq.gui.controller.test;
 
 import eu.chargetime.hq.core.Connection;
 import eu.chargetime.hq.gui.controller.MainController;
+import eu.chargetime.hq.gui.view.SetupPanel;
 import org.junit.Test;
 import org.mockito.Mock;
 
@@ -37,16 +38,19 @@ public class MainControllerTest {
     private MainController sut;
 
     @Mock
-    Connection connection = mock(Connection.class);
+    private Connection connection = mock(Connection.class);
+
+    @Mock
+    private SetupPanel setupPanel = mock(SetupPanel.class);
 
     public MainControllerTest() {
-        sut = new MainController(connection);
+        sut = new MainController(connection, setupPanel);
     }
 
     @Test
     public void connect_listenIsCalled() throws Exception {
         // When
-        sut.connect();
+        //sut
 
         //Then
         verify(connection, times(1)).isConnected();

@@ -1,4 +1,4 @@
-package eu.chargetime.hq.eu.chargetime.hq.gui.view;
+package eu.chargetime.hq.gui.view;
 /*
     ChargeTime.eu - ChargeTime HQ
 

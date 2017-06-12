@@ -25,10 +25,13 @@ package eu.chargetime.hq;
     SOFTWARE.
  */
 
-import eu.chargetime.hq.eu.chargetime.hq.gui.view.OCPPSetupPanel;
 import eu.chargetime.hq.gui.controller.MainController;
 import eu.chargetime.hq.gui.view.MainView;
+import eu.chargetime.hq.gui.view.OCPPSetupPanel;
 import eu.chargetime.hq.ocpp.OCPPServer;
+import eu.chargetime.hq.ocpp.OCPPServerFactory;
+import eu.chargetime.hq.ocpp.profile.CoreEventHandler;
+import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
 
 public class OCPPLauncher {
     private MainView mainWindow;
@@ -39,7 +42,9 @@ public class OCPPLauncher {
 
     public OCPPLauncher() {
         // Composite root
-        OCPPServer server = new OCPPServer(null);
+        ServerCoreProfile coreProfile = new ServerCoreProfile(new CoreEventHandler());
+        OCPPServerFactory serverFactory = new OCPPServerFactory(coreProfile);
+        OCPPServer server = new OCPPServer(serverFactory);
         OCPPSetupPanel setupPanel = new OCPPSetupPanel();
         MainController mainController = new MainController(server, setupPanel);
         mainWindow = new MainView(mainController);
