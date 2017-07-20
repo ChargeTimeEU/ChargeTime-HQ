@@ -25,15 +25,21 @@ package eu.chargetime.hq;
     SOFTWARE.
  */
 
-import eu.chargetime.hq.gui.IViewComposite;
-import eu.chargetime.hq.gui.IViewFactory;
-import eu.chargetime.hq.gui.MainView;
-import eu.chargetime.hq.gui.OCPPViewFactory;
-import eu.chargetime.hq.gui.controller.MainController;
-import eu.chargetime.hq.gui.MainFrame;
+import eu.chargetime.hq.gui.mediators.MainMediatorFactory;
+import eu.chargetime.hq.gui.views.IMainView;
+import eu.chargetime.hq.gui.views.MainView;
+import eu.chargetime.hq.ocpp.OCPPServerFactory;
+import eu.chargetime.hq.ocpp.OCPPServerService;
+import eu.chargetime.hq.ocpp.commands.ServerCommandFactory;
+import eu.chargetime.hq.ocpp.profile.CoreEventHandler;
+import eu.chargetime.hq.ocpp.profile.ServerEventHandler;
+import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-public class OCPPLauncher {
-    private MainController mainController;
+public class OCPPLauncher extends Application {
+    IMainView mainView;
 
     public static void main(String args[]) {
         new OCPPLauncher().launch();
@@ -41,15 +47,22 @@ public class OCPPLauncher {
 
     public OCPPLauncher() {
         // Composite root
-        MainFrame mainFrame = new MainFrame("OCPP version 1.6");
-        IViewComposite mainView = new MainView(mainFrame);
-        IViewFactory factory = new OCPPViewFactory();
 
-        mainController = new MainController(mainView, factory);
+        ServerCoreProfile serverCoreProfile = new ServerCoreProfile(new CoreEventHandler());
+        OCPPServerFactory ocppServerFactory = new OCPPServerFactory(serverCoreProfile);
+        OCPPServerService ocppServerService = new OCPPServerService(new ServerEventHandler(), ocppServerFactory);
+        ServerCommandFactory serverCommandFactory = new ServerCommandFactory(ocppServerService);
+        MainMediatorFactory mainMediatorFactory = new MainMediatorFactory(serverCommandFactory);
+        mainView = new MainView(mainMediatorFactory);
     }
 
-    public void launch() {
+    @Override
+    public void start(Stage stage) throws Exception {
         // Run program
-        mainController.start();
+        Scene scene = new Scene(mainView.getView(), 900, 700);
+        stage.setTitle("ChargeTime OCPP v1.6 Server");
+        stage.setScene(scene);
+        stage.show();
     }
+
 }

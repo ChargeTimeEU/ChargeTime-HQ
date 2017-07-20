@@ -1,8 +1,7 @@
-package eu.chargetime.hq.gui;
-
+package eu.chargetime.hq.ocpp;
 /*
     ChargeTime.eu - ChargeTime HQ
-    
+
     MIT License
 
     Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
@@ -25,7 +24,37 @@ package eu.chargetime.hq.gui;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
-public interface IViewComposite extends IViewComponent {
-    void add(IViewComponent component);
-    void remove(IViewComponent component);
+
+import eu.chargetime.ocpp.Server;
+import eu.chargetime.ocpp.ServerEvents;
+
+public class OCPPServerService implements IOCPPServerService {
+
+    private final ServerEvents events;
+    private OCPPServerFactory serverFactory;
+
+    public OCPPServerService(ServerEvents events, OCPPServerFactory serverFactory) {
+
+        if (serverFactory == null) {
+            throw new IllegalArgumentException();
+        }
+
+        if (events == null) {
+            throw new IllegalArgumentException();
+        }
+
+        this.serverFactory = serverFactory;
+        this.events = events;
+    }
+
+    @Override
+    public void connect(OCPPType type, String host, int port) {
+        try {
+            Server server = serverFactory.create(type);
+            server.open(host, port, events);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
 }

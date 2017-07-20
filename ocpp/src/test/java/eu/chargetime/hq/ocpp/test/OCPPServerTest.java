@@ -25,7 +25,7 @@ package eu.chargetime.hq.ocpp.test;
     SOFTWARE.
  */
 
-import eu.chargetime.hq.ocpp.OCPPServer;
+import eu.chargetime.hq.ocpp.OCPPServerService;
 import eu.chargetime.hq.ocpp.OCPPServerFactory;
 import eu.chargetime.hq.ocpp.OCPPType;
 import eu.chargetime.ocpp.ServerEvents;
@@ -38,7 +38,7 @@ import static org.mockito.Mockito.verify;
 
 public class OCPPServerTest {
 
-    private OCPPServer sut;
+    private OCPPServerService sut;
 
     @Mock
     OCPPServerFactory agentFactory = mock(OCPPServerFactory.class);
@@ -47,7 +47,7 @@ public class OCPPServerTest {
     ServerEvents serverEvents = mock(ServerEvents.class);
 
     public OCPPServerTest() {
-        sut = new OCPPServer(serverEvents, agentFactory);
+        sut = new OCPPServerService(serverEvents, agentFactory);
     }
 
     @Test

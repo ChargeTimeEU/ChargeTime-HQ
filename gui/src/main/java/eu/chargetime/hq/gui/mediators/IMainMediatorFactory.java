@@ -1,4 +1,4 @@
-package eu.chargetime.hq.gui;
+package eu.chargetime.hq.gui.mediators;
 /*
     ChargeTime.eu - ChargeTime HQ
     
@@ -25,14 +25,8 @@ package eu.chargetime.hq.gui;
     SOFTWARE.
  */
 
-import eu.chargetime.hq.gui.view.OCPPSetupView;
+import eu.chargetime.hq.gui.views.IMainView;
 
-import java.awt.*;
-
-public class OCPPViewFactory implements IViewFactory {
-
-    @Override
-    public IViewComponent createSetupView(Container container) {
-        return new OCPPSetupView(container);
-    }
+public interface IMainMediatorFactory {
+    IMainMediator createMediator(IMainView view);
 }

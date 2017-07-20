@@ -1,7 +1,7 @@
-package eu.chargetime.hq.gui.view;
+package eu.chargetime.hq.ocpp.commands;
 /*
     ChargeTime.eu - ChargeTime HQ
-
+    
     MIT License
 
     Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
@@ -25,54 +25,21 @@ package eu.chargetime.hq.gui.view;
     SOFTWARE.
  */
 
-import eu.chargetime.hq.gui.IViewComponent;
+import eu.chargetime.hq.ocpp.IOCPPServerService;
 import eu.chargetime.hq.ocpp.OCPPType;
 
-import javax.swing.*;
-import java.awt.*;
+public class ServerCommandFactory {
 
-public class OCPPSetupView implements IViewComponent {
-    private final Container frame;
+    private final IOCPPServerService service;
 
+    public ServerCommandFactory(IOCPPServerService service) {
+        if (service == null)
+            throw new IllegalArgumentException("service cannot be null");
 
-    public OCPPSetupView(Container frame) {
-        if (frame == null)
-            throw new IllegalArgumentException();
-
-        this.frame = frame;
+        this.service = service;
     }
 
-    @Override
-    public void compose() {
-        JPanel panel = new JPanel();
-
-        addHeadline(panel);
-        addSetupFields(panel);
-        addSelectButton(panel);
-
-        frame.add(panel);
-    }
-
-    private void addSetupFields(JPanel panel) {
-        JComboBox serverType = new JComboBox(OCPPType.values());
-        panel.add(serverType);
-
-        JTextField hostAddress = new JTextField(20);
-        hostAddress.setToolTipText("Host address");
-        panel.add(hostAddress);
-
-        JTextField port = new JTextField(20);
-        port.setToolTipText("Port number");
-        panel.add(port);
-    }
-
-    private void addSelectButton(JPanel panel) {
-        JButton selectButton = new JButton("Select");
-        panel.add(selectButton);
-    }
-
-    private void addHeadline(JPanel panel) {
-        JLabel label = new JLabel("OCPP version 1.6");
-        panel.add(label);
+    public ServerConnect createServerConnect(OCPPType serverType, String hostname, int port) {
+        return new ServerConnect(service, serverType, hostname, port);
     }
 }

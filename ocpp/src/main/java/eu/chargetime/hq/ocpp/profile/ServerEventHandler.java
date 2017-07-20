@@ -1,7 +1,7 @@
-package eu.chargetime.hq.ocpp;
+package eu.chargetime.hq.ocpp.profile;
 /*
     ChargeTime.eu - ChargeTime HQ
-
+    
     MIT License
 
     Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
@@ -25,30 +25,20 @@ package eu.chargetime.hq.ocpp;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.Server;
 import eu.chargetime.ocpp.ServerEvents;
+import eu.chargetime.ocpp.model.SessionInformation;
 
-public class OCPPServer {
+import java.util.UUID;
 
-    private final ServerEvents events;
-    private OCPPServerFactory serverFactory;
+public class ServerEventHandler implements ServerEvents {
 
-    public OCPPServer(ServerEvents events, OCPPServerFactory serverFactory) {
+    @Override
+    public void newSession(UUID uuid, SessionInformation sessionInformation) {
 
-        if (serverFactory == null) {
-            throw new IllegalArgumentException();
-        }
-
-        if (events == null) {
-            throw new IllegalArgumentException();
-        }
-
-        this.serverFactory = serverFactory;
-        this.events = events;
     }
 
-    public void connect(OCPPType type, String host, int port) {
-        Server server = serverFactory.create(type);
-        server.open(host, port, events);
+    @Override
+    public void lostSession(UUID uuid) {
+
     }
 }

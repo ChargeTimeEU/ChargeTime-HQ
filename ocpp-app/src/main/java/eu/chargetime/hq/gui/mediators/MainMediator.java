@@ -1,4 +1,4 @@
-package eu.chargetime.hq.gui.controller;
+package eu.chargetime.hq.gui.mediators;
 /*
     ChargeTime.eu - ChargeTime HQ
     
@@ -25,29 +25,36 @@ package eu.chargetime.hq.gui.controller;
     SOFTWARE.
  */
 
-import eu.chargetime.hq.gui.IViewComposite;
-import eu.chargetime.hq.gui.IViewFactory;
+import eu.chargetime.hq.gui.views.IMainView;
+import eu.chargetime.hq.ocpp.OCPPType;
+import eu.chargetime.hq.ocpp.commands.ServerCommandFactory;
+import eu.chargetime.hq.ocpp.commands.ServerConnect;
 
-import javax.swing.*;
+public class MainMediator implements IMainMediator {
 
-public class MainController {
+    private final IMainView view;
+    private final ServerCommandFactory commandFactory;
 
-    private final IViewComposite view;
-    private final IViewFactory viewFactory;
-
-    public MainController(IViewComposite view, IViewFactory viewFactory) {
+    public MainMediator(IMainView view, ServerCommandFactory commandFactory) {
         if (view == null)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("view cannot be null");
 
-        if (viewFactory == null)
-            throw new IllegalArgumentException();
+        if (commandFactory == null)
+            throw new IllegalArgumentException("commandFactory cannot be null");
 
         this.view = view;
-        this.viewFactory = viewFactory;
+        this.commandFactory = commandFactory;
     }
 
-    public void start() {
-        view.add(viewFactory.createSetupView(new JPanel()));
-        view.compose();
+    @Override
+    public void doConnect(String serverType, String hostname, String port) {
+        OCPPType type = Enum.valueOf(OCPPType.class, serverType);
+        int portNumber = Integer.parseInt(port);
+
+        ServerConnect command = commandFactory.createServerConnect(type, hostname, portNumber);
+        command.setOnRunning(event -> view.setStatus("Connecting..."));
+        command.setOnSucceeded(event -> view.setStatus("Connected"));
+        command.setOnFailed(event -> view.setStatus("Failed!"));
+        command.start();
     }
 }

@@ -1,7 +1,7 @@
-package eu.chargetime.hq.gui;
+package eu.chargetime.hq.gui.mediators;
 /*
     ChargeTime.eu - ChargeTime HQ
-
+    
     MIT License
 
     Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
@@ -25,38 +25,6 @@ package eu.chargetime.hq.gui;
     SOFTWARE.
  */
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-
-public class MainView implements IViewComposite {
-
-    private final Container frame;
-    private List<IViewComponent> components;
-
-    public MainView(Container frame) {
-        if (frame == null)
-            throw new IllegalArgumentException();
-
-        this.frame = frame;
-        components = new ArrayList<>();
-    }
-
-    @Override
-    public void compose() {
-        for (IViewComponent component: components) {
-            component.compose();
-        }
-        frame.setVisible(true);
-    }
-
-    @Override
-    public void add(IViewComponent component) {
-        components.add(component);
-    }
-
-    @Override
-    public void remove(IViewComponent component) {
-        components.remove(component);
-    }
+public interface IMainMediator {
+    void doConnect(String serverType, String hostname, String port);
 }

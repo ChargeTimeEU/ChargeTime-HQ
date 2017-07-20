@@ -1,7 +1,7 @@
-package eu.chargetime.hq.gui;
+package eu.chargetime.hq.ocpp.commands;
 /*
     ChargeTime.eu - ChargeTime HQ
-
+    
     MIT License
 
     Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
@@ -25,6 +25,33 @@ package eu.chargetime.hq.gui;
     SOFTWARE.
  */
 
-public interface IViewComponent {
-    void compose();
+import eu.chargetime.hq.ocpp.IOCPPServerService;
+import eu.chargetime.hq.ocpp.OCPPType;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
+
+public class ServerConnect extends Service<Void> {
+
+    private final IOCPPServerService service;
+    private final OCPPType serverType;
+    private final String hostname;
+    private final int port;
+
+    public ServerConnect(IOCPPServerService service, OCPPType serverType, String hostname, int port) {
+        this.service = service;
+        this.serverType = serverType;
+        this.hostname = hostname;
+        this.port = port;
+    }
+
+    @Override
+    protected Task<Void> createTask() {
+        return new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                service.connect(serverType, hostname, port);
+                return null;
+            }
+        };
+    }
 }

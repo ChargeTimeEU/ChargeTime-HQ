@@ -1,7 +1,7 @@
-package eu.chargetime.hq.gui;
+package eu.chargetime.hq.gui.views;
 /*
     ChargeTime.eu - ChargeTime HQ
-
+    
     MIT License
 
     Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
@@ -25,8 +25,9 @@ package eu.chargetime.hq.gui;
     SOFTWARE.
  */
 
-import java.awt.*;
+import javafx.scene.layout.Pane;
 
-public interface IViewFactory {
-    IViewComponent createSetupView(Container container);
+public interface IMainView {
+    Pane getView();
+    void setStatus(String connected);
 }

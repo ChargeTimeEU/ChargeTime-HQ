@@ -25,32 +25,6 @@ package eu.chargetime.hq.ocpp;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.JSONServer;
-import eu.chargetime.ocpp.SOAPServer;
-import eu.chargetime.ocpp.Server;
-import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
-
-public class OCPPServerFactory {
-
-    private ServerCoreProfile coreProfile;
-
-    public OCPPServerFactory(ServerCoreProfile coreProfile) {
-
-        if(coreProfile == null)
-            throw new IllegalArgumentException();
-        this.coreProfile = coreProfile;
-    }
-
-    public Server create(OCPPType type) {
-        Server rel = null;
-        switch (type) {
-            case json:
-                rel = new JSONServer(coreProfile);
-                break;
-            case SOAP:
-                rel = new SOAPServer(coreProfile);
-                break;
-        }
-        return rel;
-    }
+public interface IOCPPServerService {
+    void connect(OCPPType type, String host, int port);
 }

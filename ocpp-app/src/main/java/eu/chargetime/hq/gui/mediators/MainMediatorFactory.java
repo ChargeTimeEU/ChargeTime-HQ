@@ -1,7 +1,11 @@
-package eu.chargetime.hq.gui;
+package eu.chargetime.hq.gui.mediators;
+
+import eu.chargetime.hq.gui.views.IMainView;
+import eu.chargetime.hq.ocpp.commands.ServerCommandFactory;
+
 /*
     ChargeTime.eu - ChargeTime HQ
-
+    
     MIT License
 
     Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
@@ -24,20 +28,17 @@ package eu.chargetime.hq.gui;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
+public class MainMediatorFactory implements IMainMediatorFactory {
 
-import javax.swing.*;
+    private final ServerCommandFactory commandFactory;
 
-public class MainFrame extends JFrame {
-    JPanel centerStage;
+    public MainMediatorFactory(ServerCommandFactory commandFactory) {
 
-    public MainFrame(String title) {
-        super(String.format("%s - ChargeTime HQ", title));
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(400, 200);
-        centerStage = new JPanel();
+        this.commandFactory = commandFactory;
     }
 
-    public JPanel getCenterStage() {
-        return centerStage;
+    @Override
+    public IMainMediator createMediator(IMainView view) {
+        return new MainMediator(view, commandFactory);
     }
 }
