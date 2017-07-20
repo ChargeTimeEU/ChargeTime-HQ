@@ -1,4 +1,4 @@
-package eu.chargetime.hq.gui.view;
+package eu.chargetime.hq.gui;
 /*
     ChargeTime.eu - ChargeTime HQ
 
@@ -25,15 +25,38 @@ package eu.chargetime.hq.gui.view;
     SOFTWARE.
  */
 
-import eu.chargetime.hq.gui.view.SetupPanel;
-import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class OCPPSetupPanel implements SetupPanel {
+public class MainView implements IViewComposite {
+
+    private final Container frame;
+    private List<IViewComponent> components;
+
+    public MainView(Container frame) {
+        if (frame == null)
+            throw new IllegalArgumentException();
+
+        this.frame = frame;
+        components = new ArrayList<>();
+    }
 
     @Override
-    public JPanel drawPanel() {
-        JPanel panel = new JPanel();
+    public void compose() {
+        for (IViewComponent component: components) {
+            component.compose();
+        }
+        frame.setVisible(true);
+    }
 
-        return panel;
+    @Override
+    public void add(IViewComponent component) {
+        components.add(component);
+    }
+
+    @Override
+    public void remove(IViewComponent component) {
+        components.remove(component);
     }
 }

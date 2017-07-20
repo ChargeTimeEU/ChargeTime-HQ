@@ -25,23 +25,29 @@ package eu.chargetime.hq.gui.controller;
     SOFTWARE.
  */
 
-import eu.chargetime.hq.core.Connection;
-import eu.chargetime.hq.gui.view.SetupPanel;
+import eu.chargetime.hq.gui.IViewComposite;
+import eu.chargetime.hq.gui.IViewFactory;
+
+import javax.swing.*;
 
 public class MainController {
 
-    private final SetupPanel setupPanel;
-    private final Connection connection;
+    private final IViewComposite view;
+    private final IViewFactory viewFactory;
 
-    public MainController(Connection connection, SetupPanel setupPanel) {
-
-        if (connection == null)
+    public MainController(IViewComposite view, IViewFactory viewFactory) {
+        if (view == null)
             throw new IllegalArgumentException();
 
-        if (setupPanel == null)
+        if (viewFactory == null)
             throw new IllegalArgumentException();
 
-        this.connection = connection;
-        this.setupPanel = setupPanel;
+        this.view = view;
+        this.viewFactory = viewFactory;
+    }
+
+    public void start() {
+        view.add(viewFactory.createSetupView(new JPanel()));
+        view.compose();
     }
 }

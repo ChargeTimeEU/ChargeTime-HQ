@@ -25,35 +25,54 @@ package eu.chargetime.hq.gui.view;
     SOFTWARE.
  */
 
-import eu.chargetime.hq.gui.controller.MainController;
+import eu.chargetime.hq.gui.IViewComponent;
+import eu.chargetime.hq.ocpp.OCPPType;
+
 import javax.swing.*;
+import java.awt.*;
 
-public class MainView {
+public class OCPPSetupView implements IViewComponent {
+    private final Container frame;
 
-    private MainController controller;
 
-    public MainView(MainController controller) {
-
-        if (controller == null)
+    public OCPPSetupView(Container frame) {
+        if (frame == null)
             throw new IllegalArgumentException();
 
-        this.controller = controller;
+        this.frame = frame;
     }
 
-    public void show() {
-        JFrame frame = createFrame();
-        frame.setVisible(true);
-        frame.setSize(400, 200);
+    @Override
+    public void compose() {
+        JPanel panel = new JPanel();
+
+        addHeadline(panel);
+        addSetupFields(panel);
+        addSelectButton(panel);
+
+        frame.add(panel);
     }
 
-    private JFrame createFrame() {
-        JFrame frame = new JFrame("ChargeTime HQ");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    private void addSetupFields(JPanel panel) {
+        JComboBox serverType = new JComboBox(OCPPType.values());
+        panel.add(serverType);
 
+        JTextField hostAddress = new JTextField(20);
+        hostAddress.setToolTipText("Host address");
+        panel.add(hostAddress);
 
-
-        //frame.pack();
-        return frame;
+        JTextField port = new JTextField(20);
+        port.setToolTipText("Port number");
+        panel.add(port);
     }
 
+    private void addSelectButton(JPanel panel) {
+        JButton selectButton = new JButton("Select");
+        panel.add(selectButton);
+    }
+
+    private void addHeadline(JPanel panel) {
+        JLabel label = new JLabel("OCPP version 1.6");
+        panel.add(label);
+    }
 }

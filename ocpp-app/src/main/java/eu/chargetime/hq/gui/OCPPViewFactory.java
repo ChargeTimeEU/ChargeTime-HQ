@@ -1,7 +1,7 @@
-package eu.chargetime.hq;
+package eu.chargetime.hq.gui;
 /*
     ChargeTime.eu - ChargeTime HQ
-
+    
     MIT License
 
     Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
@@ -25,31 +25,14 @@ package eu.chargetime.hq;
     SOFTWARE.
  */
 
-import eu.chargetime.hq.gui.IViewComposite;
-import eu.chargetime.hq.gui.IViewFactory;
-import eu.chargetime.hq.gui.MainView;
-import eu.chargetime.hq.gui.OCPPViewFactory;
-import eu.chargetime.hq.gui.controller.MainController;
-import eu.chargetime.hq.gui.MainFrame;
+import eu.chargetime.hq.gui.view.OCPPSetupView;
 
-public class OCPPLauncher {
-    private MainController mainController;
+import java.awt.*;
 
-    public static void main(String args[]) {
-        new OCPPLauncher().launch();
-    }
+public class OCPPViewFactory implements IViewFactory {
 
-    public OCPPLauncher() {
-        // Composite root
-        MainFrame mainFrame = new MainFrame("OCPP version 1.6");
-        IViewComposite mainView = new MainView(mainFrame);
-        IViewFactory factory = new OCPPViewFactory();
-
-        mainController = new MainController(mainView, factory);
-    }
-
-    public void launch() {
-        // Run program
-        mainController.start();
+    @Override
+    public IViewComponent createSetupView(Container container) {
+        return new OCPPSetupView(container);
     }
 }

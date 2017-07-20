@@ -1,7 +1,8 @@
-package eu.chargetime.hq.gui.view;
+package eu.chargetime.hq.gui;
+
 /*
     ChargeTime.eu - ChargeTime HQ
-
+    
     MIT License
 
     Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
@@ -24,9 +25,7 @@ package eu.chargetime.hq.gui.view;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
-
-import javax.swing.*;
-
-public interface SetupPanel {
-    JPanel drawPanel();
+public interface IViewComposite extends IViewComponent {
+    void add(IViewComponent component);
+    void remove(IViewComponent component);
 }

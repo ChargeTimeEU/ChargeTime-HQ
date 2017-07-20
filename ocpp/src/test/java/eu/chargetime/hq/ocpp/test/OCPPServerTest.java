@@ -1,15 +1,7 @@
 package eu.chargetime.hq.ocpp.test;
-
-import eu.chargetime.hq.ocpp.OCPPServer;
-import eu.chargetime.hq.ocpp.OCPPServerFactory;
-import org.junit.Test;
-import org.mockito.Mock;
-
-import static org.mockito.Mockito.*;
-
 /*
     ChargeTime.eu - ChargeTime HQ
-    
+
     MIT License
 
     Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
@@ -32,6 +24,18 @@ import static org.mockito.Mockito.*;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
+
+import eu.chargetime.hq.ocpp.OCPPServer;
+import eu.chargetime.hq.ocpp.OCPPServerFactory;
+import eu.chargetime.hq.ocpp.OCPPType;
+import eu.chargetime.ocpp.ServerEvents;
+import org.junit.Test;
+import org.mockito.Mock;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
 public class OCPPServerTest {
 
     private OCPPServer sut;
@@ -39,16 +43,25 @@ public class OCPPServerTest {
     @Mock
     OCPPServerFactory agentFactory = mock(OCPPServerFactory.class);
 
+    @Mock
+    ServerEvents serverEvents = mock(ServerEvents.class);
+
     public OCPPServerTest() {
-        sut = new OCPPServer(agentFactory);
+        sut = new OCPPServer(serverEvents, agentFactory);
     }
 
     @Test
-    public void listen_agentIsCreated() throws Exception {
-        // When
-        sut.isConnected();
+    public void connect_jsonType_createsJson() {
+        // Given
+        OCPPType type = OCPPType.json;
+        String host = "";
+        int port = 0;
 
-        //Then
-        verify(agentFactory, times(1)).create(any());
+        // When
+        sut.connect(type, host, port);
+
+        // Then
+        verify(agentFactory).create(type);
     }
+
 }

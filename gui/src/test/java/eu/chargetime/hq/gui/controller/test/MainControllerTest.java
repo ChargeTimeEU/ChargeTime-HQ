@@ -1,16 +1,7 @@
 package eu.chargetime.hq.gui.controller.test;
-
-import eu.chargetime.hq.core.Connection;
-import eu.chargetime.hq.gui.controller.MainController;
-import eu.chargetime.hq.gui.view.SetupPanel;
-import org.junit.Test;
-import org.mockito.Mock;
-
-import static org.mockito.Mockito.*;
-
 /*
     ChargeTime.eu - ChargeTime HQ
-    
+
     MIT License
 
     Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
@@ -33,29 +24,62 @@ import static org.mockito.Mockito.*;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
+
+import eu.chargetime.hq.gui.IViewComposite;
+import eu.chargetime.hq.gui.IViewFactory;
+import eu.chargetime.hq.gui.controller.MainController;
+import org.junit.Test;
+import org.mockito.Mock;
+
+import static org.mockito.Mockito.*;
+
 public class MainControllerTest {
 
     private MainController sut;
 
     @Mock
-    private Connection connection = mock(Connection.class);
+    private IViewComposite mainView = mock(IViewComposite.class);
 
     @Mock
-    private SetupPanel setupPanel = mock(SetupPanel.class);
+    private IViewFactory viewFactory = mock(IViewFactory.class);
 
     public MainControllerTest() {
-        sut = new MainController(connection, setupPanel);
+        sut = new MainController(mainView, viewFactory);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void mainController_nullNull_throwsException() throws Exception {
+        // When
+        new MainController(null, null);
+
+        // Then
+        // Throws IllegalArgumentException
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void mainController_viewAndNull_throwsException() throws Exception {
+        // When
+        new MainController(mainView, null);
+
+        // Then
+        // Throws IllegalArgumentException
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void mainController_nullAndFactory_throwsException() throws Exception {
+        // When
+        new MainController(null, viewFactory);
+
+        // Then
+        // Throws IllegalArgumentException
     }
 
     @Test
-    public void connect_listenIsCalled() throws Exception {
+    public void load_callsShow() {
         // When
-        //sut
+        sut.start();
 
-        //Then
-        verify(connection, times(1)).isConnected();
+        // Then
+        verify(mainView).compose();
     }
-
-
-
 }

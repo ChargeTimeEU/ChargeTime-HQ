@@ -1,4 +1,4 @@
-package eu.chargetime.hq.core;
+package eu.chargetime.hq.gui;
 /*
     ChargeTime.eu - ChargeTime HQ
 
@@ -25,6 +25,19 @@ package eu.chargetime.hq.core;
     SOFTWARE.
  */
 
-public interface Connection {
-    boolean isConnected();
+import javax.swing.*;
+
+public class MainFrame extends JFrame {
+    JPanel centerStage;
+
+    public MainFrame(String title) {
+        super(String.format("%s - ChargeTime HQ", title));
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(400, 200);
+        centerStage = new JPanel();
+    }
+
+    public JPanel getCenterStage() {
+        return centerStage;
+    }
 }

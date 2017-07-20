@@ -1,4 +1,4 @@
-package eu.chargetime.hq;
+package eu.chargetime.hq.gui;
 /*
     ChargeTime.eu - ChargeTime HQ
 
@@ -25,31 +25,8 @@ package eu.chargetime.hq;
     SOFTWARE.
  */
 
-import eu.chargetime.hq.gui.IViewComposite;
-import eu.chargetime.hq.gui.IViewFactory;
-import eu.chargetime.hq.gui.MainView;
-import eu.chargetime.hq.gui.OCPPViewFactory;
-import eu.chargetime.hq.gui.controller.MainController;
-import eu.chargetime.hq.gui.MainFrame;
+import java.awt.*;
 
-public class OCPPLauncher {
-    private MainController mainController;
-
-    public static void main(String args[]) {
-        new OCPPLauncher().launch();
-    }
-
-    public OCPPLauncher() {
-        // Composite root
-        MainFrame mainFrame = new MainFrame("OCPP version 1.6");
-        IViewComposite mainView = new MainView(mainFrame);
-        IViewFactory factory = new OCPPViewFactory();
-
-        mainController = new MainController(mainView, factory);
-    }
-
-    public void launch() {
-        // Run program
-        mainController.start();
-    }
+public interface IViewFactory {
+    IViewComponent createSetupView(Container container);
 }
