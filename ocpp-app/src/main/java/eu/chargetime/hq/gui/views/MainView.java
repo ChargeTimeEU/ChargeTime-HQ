@@ -30,17 +30,16 @@ import eu.chargetime.hq.gui.mediators.IMainMediatorFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 public class MainView implements IMainView {
 
     private IMainMediator mediator;
     private Label labelStatus;
+    private TextArea textLog;
 
     public MainView(IMainMediatorFactory mediatorFactory) {
         if (mediatorFactory == null)
@@ -51,18 +50,36 @@ public class MainView implements IMainView {
 
     @Override
     public Pane getView() {
-        HBox hBox = new HBox();
-        setLayout(hBox);
-        addSetup(hBox);
+        VBox rel = new VBox();
+
+        HBox firstRow = new HBox();
+        setLayout(firstRow);
+        addSetup(firstRow);
+
+        HBox secondRow = new HBox();
+        addLog(secondRow);
 
         labelStatus = new Label("Status: Ready");
-        hBox.getChildren().add(labelStatus);
-        return hBox;
+        firstRow.getChildren().add(labelStatus);
+
+        rel.getChildren().addAll(firstRow, secondRow);
+        return rel;
+    }
+
+    private void addLog(HBox hBox) {
+        textLog = new TextArea();
+        hBox.getChildren().add(textLog);
     }
 
     @Override
     public void setStatus(String status) {
         labelStatus.setText(String.format("Status: %s", status));
+    }
+
+    @Override
+    public void appendLog(String logEntry) {
+        String text = textLog.getText();
+        textLog.setText(logEntry + text);
     }
 
     private void setLayout(HBox hBox) {

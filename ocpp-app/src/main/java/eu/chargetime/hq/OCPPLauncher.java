@@ -25,21 +25,25 @@ package eu.chargetime.hq;
     SOFTWARE.
  */
 
+import eu.chargetime.hq.gui.mediators.MainLogMediator;
 import eu.chargetime.hq.gui.mediators.MainMediatorFactory;
 import eu.chargetime.hq.gui.views.IMainView;
 import eu.chargetime.hq.gui.views.MainView;
 import eu.chargetime.hq.ocpp.OCPPServerFactory;
 import eu.chargetime.hq.ocpp.OCPPServerService;
+import eu.chargetime.hq.ocpp.ObserverLog;
 import eu.chargetime.hq.ocpp.commands.ServerCommandFactory;
 import eu.chargetime.hq.ocpp.profile.CoreEventHandler;
-import eu.chargetime.hq.ocpp.profile.ServerEventHandler;
+import eu.chargetime.hq.ocpp.profile.CoreEventLogger;
+import eu.chargetime.hq.ocpp.profile.ServerEventLogger;
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class OCPPLauncher extends Application {
-    IMainView mainView;
+    private IMainView mainView;
+    private ObserverLog log;
 
     public static void main(String args[]) {
         new OCPPLauncher().launch();
@@ -48,9 +52,13 @@ public class OCPPLauncher extends Application {
     public OCPPLauncher() {
         // Composite root
 
-        ServerCoreProfile serverCoreProfile = new ServerCoreProfile(new CoreEventHandler());
+        log = new ObserverLog();
+        CoreEventHandler coreEventHandler = new CoreEventHandler();
+        CoreEventLogger coreEventLogger = new CoreEventLogger(coreEventHandler, log);
+        ServerCoreProfile serverCoreProfile = new ServerCoreProfile(coreEventLogger);
         OCPPServerFactory ocppServerFactory = new OCPPServerFactory(serverCoreProfile);
-        OCPPServerService ocppServerService = new OCPPServerService(new ServerEventHandler(), ocppServerFactory);
+        ServerEventLogger serverEventLogger = new ServerEventLogger(log);
+        OCPPServerService ocppServerService = new OCPPServerService(serverEventLogger, ocppServerFactory);
         ServerCommandFactory serverCommandFactory = new ServerCommandFactory(ocppServerService);
         MainMediatorFactory mainMediatorFactory = new MainMediatorFactory(serverCommandFactory);
         mainView = new MainView(mainMediatorFactory);
@@ -59,6 +67,8 @@ public class OCPPLauncher extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         // Run program
+
+        log.subscribe(new MainLogMediator(mainView));
         Scene scene = new Scene(mainView.getView(), 900, 700);
         stage.setTitle("ChargeTime OCPP v1.6 Server");
         stage.setScene(scene);

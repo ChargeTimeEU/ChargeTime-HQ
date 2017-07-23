@@ -30,4 +30,5 @@ import javafx.scene.layout.Pane;
 public interface IMainView {
     Pane getView();
     void setStatus(String connected);
+    void appendLog(String logEntry);
 }

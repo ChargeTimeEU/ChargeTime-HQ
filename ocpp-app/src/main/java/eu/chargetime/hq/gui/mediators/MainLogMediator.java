@@ -1,4 +1,4 @@
-package eu.chargetime.hq.ocpp.profile;
+package eu.chargetime.hq.gui.mediators;
 /*
     ChargeTime.eu - ChargeTime HQ
     
@@ -25,20 +25,20 @@ package eu.chargetime.hq.ocpp.profile;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.ServerEvents;
-import eu.chargetime.ocpp.model.SessionInformation;
+import eu.chargetime.hq.gui.views.IMainView;
+import eu.chargetime.hq.ocpp.ILogSubscriber;
 
-import java.util.UUID;
+public class MainLogMediator implements ILogSubscriber {
 
-public class ServerEventHandler implements ServerEvents {
+    private final IMainView view;
 
-    @Override
-    public void newSession(UUID uuid, SessionInformation sessionInformation) {
+    public MainLogMediator (IMainView view) {
 
+        this.view = view;
     }
 
     @Override
-    public void lostSession(UUID uuid) {
-
+    public void notify(String news) {
+        view.appendLog(news);
     }
 }

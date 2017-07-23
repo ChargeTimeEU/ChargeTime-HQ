@@ -1,4 +1,4 @@
-package eu.chargetime.hq.gui.mediators;
+package eu.chargetime.hq.ocpp.profile;
 /*
     ChargeTime.eu - ChargeTime HQ
     
@@ -24,20 +24,29 @@ package eu.chargetime.hq.gui.mediators;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
-import eu.chargetime.hq.gui.views.IMainView;
-import eu.chargetime.hq.ocpp.commands.ServerCommandFactory;
 
+import eu.chargetime.hq.ocpp.ILogService;
+import eu.chargetime.ocpp.ServerEvents;
+import eu.chargetime.ocpp.model.SessionInformation;
 
-public class MainMediatorFactory implements IMainMediatorFactory {
+import java.util.UUID;
 
-    private final ServerCommandFactory commandFactory;
+public class ServerEventLogger implements ServerEvents {
 
-    public MainMediatorFactory(ServerCommandFactory commandFactory) {
-        this.commandFactory = commandFactory;
+    private final ILogService service;
+
+    public ServerEventLogger(ILogService service) {
+
+        this.service = service;
     }
 
     @Override
-    public IMainMediator createMediator(IMainView view) {
-        return new MainMediator(view, commandFactory);
+    public void newSession(UUID uuid, SessionInformation sessionInformation) {
+        service.logNewSession(uuid, sessionInformation);
+    }
+
+    @Override
+    public void lostSession(UUID uuid) {
+        service.logLostSession(uuid);
     }
 }
