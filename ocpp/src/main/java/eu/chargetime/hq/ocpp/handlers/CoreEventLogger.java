@@ -1,4 +1,4 @@
-package eu.chargetime.hq.ocpp.profile;
+package eu.chargetime.hq.ocpp.handlers;
 /*
     ChargeTime.eu - ChargeTime HQ
     

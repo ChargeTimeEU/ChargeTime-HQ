@@ -1,7 +1,7 @@
-package eu.chargetime.hq.gui.mediators;
+package eu.chargetime.hq.adapters;
 /*
     ChargeTime.eu - ChargeTime HQ
-    
+
     MIT License
 
     Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
@@ -25,19 +25,34 @@ package eu.chargetime.hq.gui.mediators;
     SOFTWARE.
  */
 
-import eu.chargetime.hq.gui.views.IMainView;
-import eu.chargetime.hq.ocpp.commands.ServerCommandFactory;
+import eu.chargetime.hq.facades.ICustomerFacade;
+import eu.chargetime.hq.ocpp.adapters.IAuthorizeAdapter;
+import eu.chargetime.ocpp.model.core.AuthorizationStatus;
+import eu.chargetime.ocpp.model.core.AuthorizeConfirmation;
+import eu.chargetime.ocpp.model.core.AuthorizeRequest;
+import eu.chargetime.ocpp.model.core.IdTagInfo;
 
-public class MainMediatorFactory implements IMainMediatorFactory {
+import java.util.UUID;
 
-    private final ServerCommandFactory commandFactory;
+public class AuthorizeAdapter implements IAuthorizeAdapter {
+    private final ICustomerFacade facade;
 
-    public MainMediatorFactory(ServerCommandFactory commandFactory) {
-        this.commandFactory = commandFactory;
+    public AuthorizeAdapter(ICustomerFacade customerFacade) {
+        this.facade = customerFacade;
     }
 
     @Override
-    public IMainMediator createMediator(IMainView view) {
-        return new MainMediator(view, commandFactory);
+    public AuthorizeConfirmation authorize(UUID uuid, AuthorizeRequest request) {
+        AuthorizeConfirmation confirmation = new AuthorizeConfirmation();
+
+        IdTagInfo idTagInfo = new IdTagInfo();
+        if (facade.authorize(request.getIdTag()))
+            idTagInfo.setStatus(AuthorizationStatus.Accepted);
+        else
+            idTagInfo.setStatus(AuthorizationStatus.Invalid);
+
+        confirmation.setIdTagInfo(idTagInfo);
+
+        return confirmation;
     }
 }

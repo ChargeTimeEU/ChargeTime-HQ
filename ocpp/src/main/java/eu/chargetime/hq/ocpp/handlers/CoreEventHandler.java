@@ -1,4 +1,4 @@
-package eu.chargetime.hq.ocpp.profile;
+package eu.chargetime.hq.ocpp.handlers;
 /*
     ChargeTime.eu - ChargeTime HQ
     
@@ -25,6 +25,8 @@ package eu.chargetime.hq.ocpp.profile;
     SOFTWARE.
  */
 
+import eu.chargetime.hq.ocpp.adapters.IAuthorizeAdapter;
+import eu.chargetime.hq.ocpp.adapters.IBootNotificationAdapter;
 import eu.chargetime.ocpp.feature.profile.ServerCoreEventHandler;
 import eu.chargetime.ocpp.model.core.*;
 
@@ -32,14 +34,23 @@ import java.util.UUID;
 
 public class CoreEventHandler implements ServerCoreEventHandler {
 
+    private final IAuthorizeAdapter authorizeAdapter;
+    private final IBootNotificationAdapter bootNotificationAdapter;
+
+    public CoreEventHandler(IAuthorizeAdapter authorizeAdapter, IBootNotificationAdapter bootNotificationAdapter) {
+
+        this.authorizeAdapter = authorizeAdapter;
+        this.bootNotificationAdapter = bootNotificationAdapter;
+    }
+
     @Override
     public AuthorizeConfirmation handleAuthorizeRequest(UUID uuid, AuthorizeRequest authorizeRequest) {
-        return null;
+        return authorizeAdapter.authorize(uuid, authorizeRequest);
     }
 
     @Override
     public BootNotificationConfirmation handleBootNotificationRequest(UUID uuid, BootNotificationRequest bootNotificationRequest) {
-        return null;
+        return bootNotificationAdapter.authenticate(bootNotificationRequest);
     }
 
     @Override

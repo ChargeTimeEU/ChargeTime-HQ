@@ -1,5 +1,4 @@
 package eu.chargetime.hq.ocpp;
-
 /*
     ChargeTime.eu - ChargeTime HQ
     
@@ -25,6 +24,7 @@ package eu.chargetime.hq.ocpp;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
+
 public enum OCPPType {
     SOAP, json
 }

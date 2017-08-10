@@ -25,6 +25,12 @@ package eu.chargetime.hq;
     SOFTWARE.
  */
 
+import eu.chargetime.hq.adapters.BootNotificationAdapter;
+import eu.chargetime.hq.adapters.AuthorizeAdapter;
+import eu.chargetime.hq.facades.CustomerStub;
+import eu.chargetime.hq.facades.EquipmentStub;
+import eu.chargetime.hq.facades.ICustomerFacade;
+import eu.chargetime.hq.facades.IEquipmentFacade;
 import eu.chargetime.hq.gui.mediators.MainLogMediator;
 import eu.chargetime.hq.gui.mediators.MainMediatorFactory;
 import eu.chargetime.hq.gui.views.IMainView;
@@ -32,10 +38,12 @@ import eu.chargetime.hq.gui.views.MainView;
 import eu.chargetime.hq.ocpp.OCPPServerFactory;
 import eu.chargetime.hq.ocpp.OCPPServerService;
 import eu.chargetime.hq.ocpp.ObserverLog;
+import eu.chargetime.hq.ocpp.adapters.IAuthorizeAdapter;
+import eu.chargetime.hq.ocpp.adapters.IBootNotificationAdapter;
 import eu.chargetime.hq.ocpp.commands.ServerCommandFactory;
-import eu.chargetime.hq.ocpp.profile.CoreEventHandler;
-import eu.chargetime.hq.ocpp.profile.CoreEventLogger;
-import eu.chargetime.hq.ocpp.profile.ServerEventLogger;
+import eu.chargetime.hq.ocpp.handlers.CoreEventHandler;
+import eu.chargetime.hq.ocpp.handlers.CoreEventLogger;
+import eu.chargetime.hq.ocpp.handlers.ServerEventLogger;
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -51,9 +59,16 @@ public class OCPPLauncher extends Application {
 
     public OCPPLauncher() {
         // Composite root
-
         log = new ObserverLog();
-        CoreEventHandler coreEventHandler = new CoreEventHandler();
+
+        ICustomerFacade customerFacade = new CustomerStub();
+        IAuthorizeAdapter authorizeAdapter = new AuthorizeAdapter(customerFacade);
+
+        IEquipmentFacade equipmentFacade = new EquipmentStub();
+        IBootNotificationAdapter bootNotificationAdapter = new BootNotificationAdapter(equipmentFacade);
+
+        CoreEventHandler coreEventHandler = new CoreEventHandler(authorizeAdapter, bootNotificationAdapter);
+
         CoreEventLogger coreEventLogger = new CoreEventLogger(coreEventHandler, log);
         ServerCoreProfile serverCoreProfile = new ServerCoreProfile(coreEventLogger);
         OCPPServerFactory ocppServerFactory = new OCPPServerFactory(serverCoreProfile);
