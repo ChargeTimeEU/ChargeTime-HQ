@@ -1,4 +1,4 @@
-package eu.chargetime.hq.gui.mediators;
+package eu.chargetime.hq.ocpp.adapters;
 /*
     ChargeTime.eu - ChargeTime HQ
     
@@ -25,19 +25,9 @@ package eu.chargetime.hq.gui.mediators;
     SOFTWARE.
  */
 
-import eu.chargetime.hq.gui.views.IMainView;
-import eu.chargetime.hq.ocpp.commands.ServerCommandFactory;
+import eu.chargetime.ocpp.model.core.BootNotificationConfirmation;
+import eu.chargetime.ocpp.model.core.BootNotificationRequest;
 
-public class MainMediatorFactory implements IMainMediatorFactory {
-
-    private final ServerCommandFactory commandFactory;
-
-    public MainMediatorFactory(ServerCommandFactory commandFactory) {
-        this.commandFactory = commandFactory;
-    }
-
-    @Override
-    public IMainMediator createMediator(IMainView view) {
-        return new MainMediator(view, commandFactory);
-    }
+public interface IBootNotificationAdapter {
+    BootNotificationConfirmation authenticate(BootNotificationRequest bootNotificationRequest);
 }

@@ -1,4 +1,4 @@
-package eu.chargetime.hq.ocpp.profile;
+package eu.chargetime.hq.facades;
 /*
     ChargeTime.eu - ChargeTime HQ
     
@@ -25,28 +25,9 @@ package eu.chargetime.hq.ocpp.profile;
     SOFTWARE.
  */
 
-import eu.chargetime.hq.ocpp.ILogService;
-import eu.chargetime.ocpp.ServerEvents;
-import eu.chargetime.ocpp.model.SessionInformation;
-
-import java.util.UUID;
-
-public class ServerEventLogger implements ServerEvents {
-
-    private final ILogService service;
-
-    public ServerEventLogger(ILogService service) {
-
-        this.service = service;
-    }
-
+public class CustomerStub implements ICustomerFacade {
     @Override
-    public void newSession(UUID uuid, SessionInformation sessionInformation) {
-        service.logNewSession(uuid, sessionInformation);
-    }
-
-    @Override
-    public void lostSession(UUID uuid) {
-        service.logLostSession(uuid);
+    public boolean authorize(String token) {
+        return false;
     }
 }

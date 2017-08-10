@@ -25,16 +25,12 @@ package eu.chargetime.hq.ocpp.test;
     SOFTWARE.
  */
 
-import eu.chargetime.hq.ocpp.OCPPServerService;
 import eu.chargetime.hq.ocpp.OCPPServerFactory;
-import eu.chargetime.hq.ocpp.OCPPType;
+import eu.chargetime.hq.ocpp.OCPPServerService;
 import eu.chargetime.ocpp.ServerEvents;
-import org.junit.Test;
 import org.mockito.Mock;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 public class OCPPServerTest {
 
@@ -48,20 +44,6 @@ public class OCPPServerTest {
 
     public OCPPServerTest() {
         sut = new OCPPServerService(serverEvents, agentFactory);
-    }
-
-    @Test
-    public void connect_jsonType_createsJson() {
-        // Given
-        OCPPType type = OCPPType.json;
-        String host = "";
-        int port = 0;
-
-        // When
-        sut.connect(type, host, port);
-
-        // Then
-        verify(agentFactory).create(type);
     }
 
 }

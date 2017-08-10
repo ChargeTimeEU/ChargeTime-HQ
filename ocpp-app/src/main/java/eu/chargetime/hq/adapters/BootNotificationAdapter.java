@@ -1,7 +1,14 @@
-package eu.chargetime.hq.gui.mediators;
+package eu.chargetime.hq.adapters;
+
+import eu.chargetime.hq.facades.IEquipmentFacade;
+import eu.chargetime.hq.ocpp.adapters.IBootNotificationAdapter;
+import eu.chargetime.ocpp.model.core.BootNotificationConfirmation;
+import eu.chargetime.ocpp.model.core.BootNotificationRequest;
+import eu.chargetime.ocpp.model.core.RegistrationStatus;
+
 /*
     ChargeTime.eu - ChargeTime HQ
-    
+
     MIT License
 
     Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
@@ -24,20 +31,22 @@ package eu.chargetime.hq.gui.mediators;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
+public class BootNotificationAdapter implements IBootNotificationAdapter {
+    private final IEquipmentFacade facade;
 
-import eu.chargetime.hq.gui.views.IMainView;
-import eu.chargetime.hq.ocpp.commands.ServerCommandFactory;
-
-public class MainMediatorFactory implements IMainMediatorFactory {
-
-    private final ServerCommandFactory commandFactory;
-
-    public MainMediatorFactory(ServerCommandFactory commandFactory) {
-        this.commandFactory = commandFactory;
+    public BootNotificationAdapter(IEquipmentFacade facade) {
+        this.facade = facade;
     }
 
     @Override
-    public IMainMediator createMediator(IMainView view) {
-        return new MainMediator(view, commandFactory);
+    public BootNotificationConfirmation authenticate(BootNotificationRequest request) {
+        BootNotificationConfirmation confirmation = new BootNotificationConfirmation();
+
+        if (facade.authenticate(request.getMeterSerialNumber()))
+            confirmation.setStatus(RegistrationStatus.Accepted);
+        else
+            confirmation.setStatus(RegistrationStatus.Rejected);
+
+        return confirmation;
     }
 }
